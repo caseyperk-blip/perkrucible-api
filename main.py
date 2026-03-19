@@ -27,15 +27,15 @@ async def echo_file(file: UploadFile = File(...)):
 
 @app.post("/remove-bg")
 async def remove_background(file: UploadFile = File(...)):
-    print("remove-bg: request received")
+    print("remove-bg: request received", flush=True)
 
     from rembg import remove
-    print("remove-bg: rembg imported")
+    print("remove-bg: rembg imported", flush=True)
 
     input_bytes = await file.read()
-    print("remove-bg: file read, bytes =", len(input_bytes))
+    print(f"remove-bg: file read, bytes={len(input_bytes)}", flush=True)
 
     output_bytes = remove(input_bytes)
-    print("remove-bg: background removed, output bytes =", len(output_bytes))
+    print(f"remove-bg: background removed, output bytes={len(output_bytes)}", flush=True)
 
     return Response(content=output_bytes, media_type="image/png")

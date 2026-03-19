@@ -11,7 +11,7 @@ app.add_middleware(
         "http://127.0.0.1:3000",
         "https://perkrucible.vercel.app",
     ],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -22,8 +22,15 @@ async def root():
 
 @app.post("/remove-bg")
 async def remove_background(file: UploadFile = File(...)):
+    print("remove-bg: request received")
+
     from rembg import remove
+    print("remove-bg: rembg imported")
 
     input_bytes = await file.read()
+    print("remove-bg: file read, bytes =", len(input_bytes))
+
     output_bytes = remove(input_bytes)
+    print("remove-bg: background removed, output bytes =", len(output_bytes))
+
     return Response(content=output_bytes, media_type="image/png")

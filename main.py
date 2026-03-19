@@ -20,6 +20,11 @@ app.add_middleware(
 async def root():
     return {"status": "ok"}
 
+@app.post("/echo-file")
+async def echo_file(file: UploadFile = File(...)):
+    data = await file.read()
+    return {"filename": file.filename, "bytes": len(data)}
+
 @app.post("/remove-bg")
 async def remove_background(file: UploadFile = File(...)):
     print("remove-bg: request received")
